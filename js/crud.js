@@ -1,7 +1,4 @@
 (function (global) {
-	const { MODULES } = global.HcsModules
-	const store = global.HcsStore
-
 	function escapeHtml(str) {
 		return String(str == null ? '' : str)
 			.replace(/&/g, '&amp;')
@@ -11,6 +8,11 @@
 	}
 
 	function mountModule(moduleKey, rootEl) {
+		const MODULES = (global.HcsModules && global.HcsModules.MODULES) || {}
+		const store = global.HcsStore
+		if (!store) {
+			throw new Error('HcsStore 未加载')
+		}
 		const config = MODULES[moduleKey]
 		if (!config || !rootEl) return
 
@@ -41,6 +43,9 @@
 		const modalClose = document.getElementById('crudModalClose')
 		const modalCancel = document.getElementById('crudModalCancel')
 		const modalSave = document.getElementById('crudModalSave')
+		if (!modal || !modalForm || !modalTitle || !modalClose || !modalCancel || !modalSave) {
+			throw new Error('弹窗 DOM 缺失，请确认 console.html 为最新版本')
+		}
 
 		const searchInput = rootEl.querySelector('.crud-search')
 		const addBtn = rootEl.querySelector('.btn-add')

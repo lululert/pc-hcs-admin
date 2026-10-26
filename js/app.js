@@ -39,9 +39,24 @@
 		const host = document.getElementById('page-' + pageId)
 		if (!host || !host.classList.contains('crud-host')) return
 		const moduleKey = host.getAttribute('data-module')
-		if (!moduleKey || mounted[pageId]) return
-		window.HcsCrud.mountModule(moduleKey, host)
-		mounted[pageId] = true
+		if (!moduleKey) return
+		if (mounted[pageId] && host.innerHTML.trim()) return
+
+		if (!window.HcsCrud || !window.HcsModules || !window.HcsStore) {
+			host.innerHTML =
+				'<div class="card"><h3>页面资源未加载完整</h3><p>请强制刷新（Ctrl+F5），或清除缓存后重开。若仍空白，请确认已部署最新 js/app.js、js/crud.js。</p></div>'
+			return
+		}
+		try {
+			window.HcsCrud.mountModule(moduleKey, host)
+			mounted[pageId] = true
+		} catch (err) {
+			console.error(err)
+			host.innerHTML =
+				'<div class="card"><h3>模块加载失败</h3><p>' +
+				(err && err.message ? err.message : '未知错误') +
+				'</p></div>'
+		}
 	}
 
 	function showPage(pageId) {
