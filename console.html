@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<script>
-		window.HCS_BUILD = '20261028'
+		window.HCS_BUILD = '20261029'
 		if (!/\bv=/.test(location.search)) {
 			location.replace(
 				location.pathname + '?v=' + window.HCS_BUILD + (location.hash || '#dashboard')
@@ -15,7 +15,7 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>餐饮供应链 HCS 管理端</title>
-	<link rel="stylesheet" href="css/admin.css?v=20261028" />
+	<link rel="stylesheet" href="css/admin.css?v=20261029" />
 </head>
 <body>
 	<div class="layout">
@@ -34,6 +34,7 @@
 				<li><a href="#techContent" data-page="techContent">技术内容</a></li>
 				<li><a href="#methods" data-page="methods">方法路线</a></li>
 				<li><a href="#deliverables" data-page="deliverables">体系成果</a></li>
+				<li><a href="#architecture" data-page="architecture">模块映射</a></li>
 			</ul>
 			<div class="nav-section">业务功能</div>
 			<ul class="nav-menu">
@@ -46,13 +47,24 @@
 				<li><a href="#pilot" data-page="pilot">试点核验</a></li>
 				<li><a href="#hcs" data-page="hcs">HCS 规则</a></li>
 			</ul>
+			<div class="nav-section">协同支撑</div>
+			<ul class="nav-menu">
+				<li><a href="#simulation" data-page="simulation">模拟推演</a></li>
+				<li><a href="#knowledge" data-page="knowledge">知识沉淀</a></li>
+				<li><a href="#users" data-page="users">协同人员</a></li>
+			</ul>
+			<div class="nav-section">系统管理</div>
+			<ul class="nav-menu">
+				<li><a href="#audit" data-page="audit">操作日志</a></li>
+				<li><a href="#settings" data-page="settings">数据管理</a></li>
+			</ul>
 		</aside>
 
 		<div class="main-wrap">
 			<header class="topbar">
 				<div class="breadcrumb">当前位置：<strong id="crumbTitle">工作台</strong></div>
 				<div class="topbar-user">
-					<span class="build-tag" title="用于确认是否加载到最新静态资源">版本 20261028</span>
+					<span class="build-tag" title="用于确认是否加载到最新静态资源">版本 20261029</span>
 					<span id="userName">管理员</span>
 					<button type="button" class="btn-logout" id="btnLogout">退出登录</button>
 				</div>
@@ -61,6 +73,7 @@
 			<main class="content">
 				<section id="page-dashboard" class="panel active">
 					<h1 class="page-title">工作台</h1>
+					<p class="page-desc">餐饮供应链分布式 HCS 管理配套技术体系 — 合同目标、业务协同与本地演示数据一体化控制台。</p>
 					<div class="stat-row stat-row-4">
 						<div class="stat-card"><div class="label">协同节点</div><div class="value" id="statNodes">0</div></div>
 						<div class="stat-card"><div class="label">库存记录</div><div class="value" id="statInventory">0</div></div>
@@ -72,6 +85,26 @@
 						<div class="stat-card"><div class="label">采购计划</div><div class="value" id="statProcurement">0</div></div>
 						<div class="stat-card"><div class="label">试点项目</div><div class="value" id="statPilots">0</div></div>
 						<div class="stat-card"><div class="label">规范条目</div><div class="value" id="statHcsRules">0</div></div>
+					</div>
+					<div class="stat-row stat-row-4 stat-row-secondary">
+						<div class="stat-card"><div class="label">模拟推演</div><div class="value" id="statSimulations">0</div></div>
+						<div class="stat-card"><div class="label">知识条目</div><div class="value" id="statKnowledge">0</div></div>
+						<div class="stat-card"><div class="label">协同人员</div><div class="value" id="statUsers">0</div></div>
+						<div class="stat-card"><div class="label">推演通过</div><div class="value" id="dashSimSummary">—</div></div>
+					</div>
+					<div class="dash-grid">
+						<div class="card">
+							<h3>库存水位概览</h3>
+							<div id="dashInventoryChart" class="dash-chart"></div>
+						</div>
+						<div class="card">
+							<h3>最新预警</h3>
+							<div id="dashRecentWarnings" class="dash-list"></div>
+						</div>
+						<div class="card dash-span-2">
+							<h3>最近操作</h3>
+							<div id="dashRecentAudit" class="dash-list"></div>
+						</div>
 					</div>
 					<div class="card">
 						<h3>快捷入口</h3>
@@ -85,6 +118,10 @@
 							<a href="#warning">预警管控</a>
 							<a href="#pilot">试点核验</a>
 							<a href="#hcs">HCS 规则</a>
+							<a href="#simulation">模拟推演</a>
+							<a href="#knowledge">知识沉淀</a>
+							<a href="#architecture">模块映射</a>
+							<a href="#settings">数据管理</a>
 						</div>
 					</div>
 				</section>
@@ -101,6 +138,12 @@
 				<section id="page-techContent" class="panel doc-host" data-doc="techContent"></section>
 				<section id="page-methods" class="panel doc-host" data-doc="methods"></section>
 				<section id="page-deliverables" class="panel doc-host" data-doc="deliverables"></section>
+				<section id="page-architecture" class="panel doc-host" data-doc="architecture"></section>
+				<section id="page-simulation" class="panel crud-host" data-module="simulations"></section>
+				<section id="page-knowledge" class="panel crud-host" data-module="knowledge"></section>
+				<section id="page-users" class="panel crud-host" data-module="users"></section>
+				<section id="page-audit" class="panel crud-host" data-module="auditLogs"></section>
+				<section id="page-settings" class="panel settings-host"></section>
 			</main>
 		</div>
 	</div>
@@ -119,12 +162,14 @@
 		</div>
 	</div>
 
-	<script src="js/build.js?v=20261028"></script>
-	<script src="js/auth.js?v=20261028"></script>
-	<script src="js/modules-config.js?v=20261028"></script>
-	<script src="js/store.js?v=20261028"></script>
-	<script src="js/project-docs.js?v=20261028"></script>
-	<script src="js/crud.js?v=20261028"></script>
-	<script src="js/app.js?v=20261028"></script>
+	<script src="js/build.js?v=20261029"></script>
+	<script src="js/auth.js?v=20261029"></script>
+	<script src="js/modules-config.js?v=20261029"></script>
+	<script src="js/store.js?v=20261029"></script>
+	<script src="js/project-docs.js?v=20261029"></script>
+	<script src="js/dashboard.js?v=20261029"></script>
+	<script src="js/settings.js?v=20261029"></script>
+	<script src="js/crud.js?v=20261029"></script>
+	<script src="js/app.js?v=20261029"></script>
 </body>
 </html>

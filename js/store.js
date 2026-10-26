@@ -1,5 +1,21 @@
 (function (global) {
-	const STORAGE_KEY = 'hcs_admin_crud_v3'
+	const STORAGE_KEY = 'hcs_admin_crud_v4'
+	const LEGACY_KEYS = ['hcs_admin_crud_v3', 'hcs_admin_crud_v2']
+
+	const MODULE_LABELS = {
+		nodes: '节点布局',
+		inventory: '库存管控',
+		dispatch: '仓储调度',
+		trace: '流转追溯',
+		procurement: '供需采购',
+		warnings: '预警管控',
+		pilots: '试点核验',
+		simulations: '场景推演',
+		knowledge: '知识沉淀',
+		users: '协同人员',
+		hcsRules: 'HCS 规则',
+		auditLogs: '操作日志'
+	}
 
 	function nowIso() {
 		return new Date().toISOString().slice(0, 19).replace('T', ' ')
@@ -7,6 +23,17 @@
 
 	function uid() {
 		return 'id_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8)
+	}
+
+	function getOperator() {
+		try {
+			const raw = sessionStorage.getItem('hcs_admin_session')
+			if (!raw) return '未知'
+			const s = JSON.parse(raw)
+			return s.displayName || s.username || '未知'
+		} catch (e) {
+			return '未知'
+		}
 	}
 
 	function seedData() {
@@ -35,6 +62,18 @@
 					syncRule: '门店需求 2 小时汇总',
 					remark: '',
 					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					name: '光谷餐饮门店 A',
+					type: '门店',
+					region: '湖北武汉',
+					province: '湖北省',
+					city: '武汉市',
+					status: '正常联动',
+					syncRule: '日销预测 T+1 补货',
+					remark: '',
+					updatedAt: nowIso()
 				}
 			],
 			inventory: [
@@ -57,6 +96,16 @@
 					turnoverDays: 9,
 					advice: '补货',
 					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					nodeName: '武昌前置仓',
+					skuName: '冷鲜禽肉-B',
+					qty: 180,
+					safetyQty: 200,
+					turnoverDays: 5,
+					advice: '补货',
+					updatedAt: nowIso()
 				}
 			],
 			dispatch: [
@@ -70,6 +119,17 @@
 					status: '待调度',
 					remark: '',
 					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					fromNode: '武昌前置仓',
+					toNode: '光谷餐饮门店 A',
+					skuName: '净菜包-A',
+					qty: 80,
+					planDate: '2026-10-27',
+					status: '在途',
+					remark: '',
+					updatedAt: nowIso()
 				}
 			],
 			trace: [
@@ -81,6 +141,16 @@
 					currentNode: '前置仓在途',
 					status: '在途',
 					trackNote: '冷链运输',
+					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					batchNo: 'FL-20261025-008',
+					material: '冷鲜禽肉',
+					fromNode: '供应商节点',
+					currentNode: '华中中央厨房仓',
+					status: '已入库',
+					trackNote: '质检合格',
 					updatedAt: nowIso()
 				}
 			],
@@ -108,6 +178,17 @@
 					status: '待处理',
 					description: '低于安全线 22%',
 					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					level: '橙色',
+					indicator: '临期保质期',
+					nodeName: '华中中央厨房仓',
+					threshold: '≤48h',
+					currentValue: '36h',
+					status: '处理中',
+					description: '批次 FL-20261024 优先出库',
+					updatedAt: nowIso()
 				}
 			],
 			hcsRules: [
@@ -126,6 +207,16 @@
 					version: 'v1.1',
 					title: '仓储调度管理细则',
 					scope: '中心仓-前置仓',
+					status: '生效中',
+					effectiveDate: '2026-01-01',
+					adaptationNote: '',
+					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					version: 'v1.0',
+					title: '库存管控导则',
+					scope: '全仓储节点',
 					status: '生效中',
 					effectiveDate: '2026-01-01',
 					adaptationNote: '',
@@ -153,15 +244,84 @@
 					adjustment: '预警阈值下调 5%',
 					updatedAt: nowIso()
 				}
-			]
+			],
+			simulations: [
+				{
+					id: uid(),
+					name: '三仓十二店峰值补货推演',
+					scale: '3 仓储节点 · 12 门店',
+					focus: '调拨时序与库存水位',
+					result: '通过',
+					issues: '极端天气下前置仓响应延迟 4h',
+					tuning: '增加备用线路参数',
+					runDate: '2026-10-20',
+					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					name: '追溯断点压力测试',
+					scale: '全链路 500 批次',
+					focus: '信息断点与核验闭环',
+					result: '部分通过',
+					issues: '门店到货扫码漏录 1.2%',
+					tuning: '补录节点与提醒阈值',
+					runDate: '2026-10-22',
+					updatedAt: nowIso()
+				}
+			],
+			knowledge: [
+				{
+					id: uid(),
+					title: '前置仓安全库存核定口径',
+					category: '库存核定',
+					version: 'v2.0',
+					source: '试点反馈沉淀',
+					summary: '按门店 7 日滚动均销 × 覆盖天数，节假日系数 1.15。',
+					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					title: '中心仓向前置仓补货波次',
+					category: '调度策略',
+					version: 'v1.3',
+					source: '模拟推演优化',
+					summary: '日配 06:00 / 14:00 两波；紧急单走 2h 快速通道。',
+					updatedAt: nowIso()
+				}
+			],
+			users: [
+				{
+					id: uid(),
+					name: '王调度',
+					role: '调度管理员',
+					nodeName: '华中中央厨房仓',
+					phone: '138****0001',
+					status: '在岗',
+					remark: '',
+					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					name: '李仓管',
+					role: '仓储作业',
+					nodeName: '武昌前置仓',
+					phone: '139****0002',
+					status: '在岗',
+					remark: '',
+					updatedAt: nowIso()
+				}
+			],
+			auditLogs: []
 		}
 	}
 
-	function mergeLegacyData(parsed) {
+	function ensureShape(parsed) {
 		const seed = seedData()
-		if (!Array.isArray(parsed.pilots)) {
-			parsed.pilots = seed.pilots.slice()
-		}
+		Object.keys(seed).forEach((key) => {
+			if (!Array.isArray(parsed[key])) {
+				parsed[key] = key === 'auditLogs' ? [] : seed[key].slice()
+			}
+		})
 		return parsed
 	}
 
@@ -169,17 +329,19 @@
 		try {
 			let raw = localStorage.getItem(STORAGE_KEY)
 			if (!raw) {
-				const legacy = localStorage.getItem('hcs_admin_crud_v2')
-				if (legacy) {
-					const data = mergeLegacyData(JSON.parse(legacy))
-					saveAll(data)
-					return data
+				for (let i = 0; i < LEGACY_KEYS.length; i++) {
+					const legacy = localStorage.getItem(LEGACY_KEYS[i])
+					if (legacy) {
+						const data = ensureShape(JSON.parse(legacy))
+						saveAll(data)
+						return data
+					}
 				}
 				const seeded = seedData()
 				saveAll(seeded)
 				return seeded
 			}
-			return mergeLegacyData(JSON.parse(raw))
+			return ensureShape(JSON.parse(raw))
 		} catch (e) {
 			const seeded = seedData()
 			saveAll(seeded)
@@ -189,6 +351,25 @@
 
 	function saveAll(data) {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+	}
+
+	function appendAudit(module, action, detail) {
+		if (module === 'auditLogs') return
+		const data = loadAll()
+		if (!data.auditLogs) data.auditLogs = []
+		data.auditLogs.unshift({
+			id: uid(),
+			time: nowIso(),
+			module,
+			moduleLabel: MODULE_LABELS[module] || module,
+			action,
+			detail: detail || '',
+			operator: getOperator()
+		})
+		if (data.auditLogs.length > 200) {
+			data.auditLogs = data.auditLogs.slice(0, 200)
+		}
+		saveAll(data)
 	}
 
 	function list(module, keyword) {
@@ -209,6 +390,7 @@
 		const row = Object.assign({}, payload, { id: uid(), updatedAt: nowIso() })
 		data[module].unshift(row)
 		saveAll(data)
+		appendAudit(module, '新增', JSON.stringify(payload).slice(0, 120))
 		return row
 	}
 
@@ -218,6 +400,7 @@
 		if (idx < 0) return null
 		data[module][idx] = Object.assign({}, data[module][idx], payload, { id, updatedAt: nowIso() })
 		saveAll(data)
+		appendAudit(module, '编辑', 'id=' + id)
 		return data[module][idx]
 	}
 
@@ -225,6 +408,7 @@
 		const data = loadAll()
 		data[module] = (data[module] || []).filter((r) => r.id !== id)
 		saveAll(data)
+		appendAudit(module, '删除', 'id=' + id)
 	}
 
 	function stats() {
@@ -232,17 +416,31 @@
 		return {
 			nodes: (data.nodes || []).length,
 			inventory: (data.inventory || []).length,
-			dispatch: (data.dispatch || []).length,
+			dispatch: (data.dispatch || []).filter((d) => d.status === '在途' || d.status === '待调度').length,
 			trace: (data.trace || []).length,
 			procurement: (data.procurement || []).length,
 			warnings: (data.warnings || []).filter((w) => w.status !== '已闭环').length,
 			pilots: (data.pilots || []).length,
+			simulations: (data.simulations || []).length,
+			knowledge: (data.knowledge || []).length,
+			users: (data.users || []).length,
 			hcsRules: (data.hcsRules || []).length
 		}
 	}
 
 	function resetDemo() {
 		saveAll(seedData())
+		appendAudit('system', '恢复演示', '重置全部业务数据')
+	}
+
+	function exportJson() {
+		return JSON.stringify(loadAll(), null, 2)
+	}
+
+	function importJson(text) {
+		const parsed = ensureShape(JSON.parse(text))
+		saveAll(parsed)
+		appendAudit('system', '导入数据', 'JSON 覆盖本地存储')
 	}
 
 	global.HcsStore = {
@@ -252,6 +450,8 @@
 		update,
 		remove,
 		stats,
-		resetDemo
+		resetDemo,
+		exportJson,
+		importJson
 	}
 })(window)

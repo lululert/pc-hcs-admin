@@ -47,8 +47,10 @@
 			throw new Error('弹窗 DOM 缺失，请确认 console.html 为最新版本')
 		}
 
+		const readOnly = !!config.readOnly
 		const searchInput = rootEl.querySelector('.crud-search')
 		const addBtn = rootEl.querySelector('.btn-add')
+		if (readOnly && addBtn) addBtn.style.display = 'none'
 		const theadRow = rootEl.querySelector('.crud-table thead tr')
 		const tbody = rootEl.querySelector('.crud-table tbody')
 		const emptyEl = rootEl.querySelector('.crud-empty')
@@ -140,17 +142,21 @@
 				})
 				const tdAct = document.createElement('td')
 				tdAct.className = 'crud-actions'
-				tdAct.innerHTML =
-					'<button type="button" class="btn-link btn-edit">编辑</button>' +
-					'<button type="button" class="btn-link btn-del danger">删除</button>'
-				tdAct.querySelector('.btn-edit').addEventListener('click', () => openModal('edit', row))
-				tdAct.querySelector('.btn-del').addEventListener('click', () => {
-					if (confirm('确认删除该记录？')) {
-						store.remove(moduleKey, row.id)
-						renderTable()
-						global.dispatchEvent(new CustomEvent('hcs-data-changed'))
-					}
-				})
+				if (readOnly) {
+					tdAct.textContent = '—'
+				} else {
+					tdAct.innerHTML =
+						'<button type="button" class="btn-link btn-edit">编辑</button>' +
+						'<button type="button" class="btn-link btn-del danger">删除</button>'
+					tdAct.querySelector('.btn-edit').addEventListener('click', () => openModal('edit', row))
+					tdAct.querySelector('.btn-del').addEventListener('click', () => {
+						if (confirm('确认删除该记录？')) {
+							store.remove(moduleKey, row.id)
+							renderTable()
+							global.dispatchEvent(new CustomEvent('hcs-data-changed'))
+						}
+					})
+				}
 				tr.appendChild(tdAct)
 				tbody.appendChild(tr)
 			})
@@ -160,7 +166,7 @@
 			keyword = searchInput.value
 			renderTable()
 		})
-		addBtn.addEventListener('click', () => openModal('add'))
+		if (!readOnly) addBtn.addEventListener('click', () => openModal('add'))
 		modalClose.addEventListener('click', closeModal)
 		modalCancel.addEventListener('click', closeModal)
 		modalSave.addEventListener('click', () => {

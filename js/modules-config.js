@@ -188,6 +188,96 @@
 				{ key: 'adjustment', label: '规则/阈值调整', type: 'textarea' }
 			]
 		},
+		simulations: {
+			title: '场景模拟推演',
+			desc: '技术方法路线（3）：多节点、多网点、多规模模拟，校验协同适配并迭代管控参数。',
+			columns: [
+				{ key: 'name', label: '推演名称' },
+				{ key: 'scale', label: '规模' },
+				{ key: 'focus', label: '验证重点' },
+				{ key: 'result', label: '结论' },
+				{ key: 'runDate', label: '推演日期' }
+			],
+			fields: [
+				{ key: 'name', label: '推演名称', type: 'text', required: true },
+				{ key: 'scale', label: '规模描述', type: 'text', required: true },
+				{ key: 'focus', label: '验证重点', type: 'text' },
+				{
+					key: 'result',
+					label: '结论',
+					type: 'select',
+					options: ['通过', '部分通过', '未通过', '待复测']
+				},
+				{ key: 'issues', label: '发现问题', type: 'textarea' },
+				{ key: 'tuning', label: '参数/模型调整', type: 'textarea' },
+				{ key: 'runDate', label: '推演日期', type: 'date' }
+			]
+		},
+		knowledge: {
+			title: 'HCS 知识沉淀',
+			desc: '技术内容（6）：仓储协同知识积累与迭代优化，支撑门店拓展与节点调整快速适配。',
+			columns: [
+				{ key: 'title', label: '标题' },
+				{ key: 'category', label: '分类' },
+				{ key: 'version', label: '版本' },
+				{ key: 'source', label: '来源' },
+				{ key: 'updatedAt', label: '更新时间' }
+			],
+			fields: [
+				{ key: 'title', label: '标题', type: 'text', required: true },
+				{
+					key: 'category',
+					label: '分类',
+					type: 'select',
+					options: ['节点协同', '调度策略', '库存核定', '追溯规范', '供需模型', '预警阈值']
+				},
+				{ key: 'version', label: '版本', type: 'text' },
+				{ key: 'source', label: '来源', type: 'text' },
+				{ key: 'summary', label: '要点摘要', type: 'textarea', required: true }
+			]
+		},
+		users: {
+			title: '协同人员与角色',
+			desc: '作业人员、调度管理人员及各环节协同角色维护（演示数据，不对接真实账号体系）。',
+			columns: [
+				{ key: 'name', label: '姓名' },
+				{ key: 'role', label: '角色' },
+				{ key: 'nodeName', label: '所属节点' },
+				{ key: 'phone', label: '联系电话' },
+				{ key: 'status', label: '状态' }
+			],
+			fields: [
+				{ key: 'name', label: '姓名', type: 'text', required: true },
+				{
+					key: 'role',
+					label: '角色',
+					type: 'select',
+					options: ['系统管理员', '调度管理员', '仓储作业', '门店负责人', '供应商联络']
+				},
+				{ key: 'nodeName', label: '所属节点', type: 'text' },
+				{ key: 'phone', label: '联系电话', type: 'text' },
+				{
+					key: 'status',
+					label: '状态',
+					type: 'select',
+					options: ['在岗', '休假', '停用']
+				},
+				{ key: 'remark', label: '备注', type: 'textarea' }
+			]
+		},
+		auditLogs: {
+			title: '操作日志',
+			desc: '本控制台内的增删改操作留痕（本地存储，最多保留 200 条）。',
+			readOnly: true,
+			columns: [
+				{ key: 'time', label: '时间' },
+				{ key: 'action', label: '操作' },
+				{ key: 'moduleLabel', label: '模块' },
+				{ key: 'detail', label: '摘要' },
+				{ key: 'operator', label: '操作人' }
+			],
+			fields: []
+		},
 		hcsRules: {
 			title: 'HCS 协同规则',
 			desc: '体系成果：节点协同操作规范、调度细则、库存导则、供需决策规程。',
@@ -222,6 +312,10 @@
 		procurement: 'procurement',
 		warning: 'warnings',
 		pilot: 'pilots',
+		simulation: 'simulations',
+		knowledge: 'knowledge',
+		users: 'users',
+		audit: 'auditLogs',
 		hcs: 'hcsRules'
 	}
 
