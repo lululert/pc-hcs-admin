@@ -2,12 +2,20 @@
 <html lang="zh-CN">
 <head>
 	<meta charset="UTF-8" />
+	<script>
+		window.HCS_BUILD = '20261028'
+		if (!/\bv=/.test(location.search)) {
+			location.replace(
+				location.pathname + '?v=' + window.HCS_BUILD + (location.hash || '#dashboard')
+			)
+		}
+	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>餐饮供应链 HCS 管理端</title>
-	<link rel="stylesheet" href="css/admin.css?v=20261027" />
+	<link rel="stylesheet" href="css/admin.css?v=20261028" />
 </head>
 <body>
 	<div class="layout">
@@ -44,6 +52,7 @@
 			<header class="topbar">
 				<div class="breadcrumb">当前位置：<strong id="crumbTitle">工作台</strong></div>
 				<div class="topbar-user">
+					<span class="build-tag" title="用于确认是否加载到最新静态资源">版本 20261028</span>
 					<span id="userName">管理员</span>
 					<button type="button" class="btn-logout" id="btnLogout">退出登录</button>
 				</div>
@@ -110,11 +119,12 @@
 		</div>
 	</div>
 
-	<script src="js/auth.js?v=20261027"></script>
-	<script src="js/modules-config.js?v=20261027"></script>
-	<script src="js/store.js?v=20261027"></script>
-	<script src="js/project-docs.js?v=20261027"></script>
-	<script src="js/crud.js?v=20261027"></script>
-	<script src="js/app.js?v=20261027"></script>
+	<script src="js/build.js?v=20261028"></script>
+	<script src="js/auth.js?v=20261028"></script>
+	<script src="js/modules-config.js?v=20261028"></script>
+	<script src="js/store.js?v=20261028"></script>
+	<script src="js/project-docs.js?v=20261028"></script>
+	<script src="js/crud.js?v=20261028"></script>
+	<script src="js/app.js?v=20261028"></script>
 </body>
 </html>

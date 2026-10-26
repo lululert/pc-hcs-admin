@@ -2,9 +2,18 @@
 <html lang="zh-CN">
 <head>
 	<meta charset="UTF-8" />
+	<script>
+		window.HCS_BUILD = '20261028'
+		if (!/\bv=/.test(location.search)) {
+			location.replace(location.pathname + '?v=' + window.HCS_BUILD)
+		}
+	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
 	<title>登录 - 餐饮供应链 HCS 管理端</title>
-	<link rel="stylesheet" href="css/admin.css?v=20261027" />
+	<link rel="stylesheet" href="css/admin.css?v=20261028" />
 </head>
 <body>
 	<div class="login-page">
@@ -34,10 +43,12 @@
 			</div>
 		</div>
 	</div>
-	<script src="js/auth.js?v=20261026c"></script>
+	<script src="js/build.js?v=20261028"></script>
+	<script src="js/auth.js?v=20261028"></script>
 	<script>
+		var consoleUrl = 'console.html?v=' + (window.HCS_BUILD || '20261028')
 		if (window.HcsAuth.getSession()) {
-			location.replace('console.html?v=20261027')
+			location.replace(consoleUrl)
 		}
 		const form = document.getElementById('loginForm')
 		const errEl = document.getElementById('loginError')
@@ -47,7 +58,7 @@
 			const password = document.getElementById('password').value
 			const res = window.HcsAuth.login(username, password)
 			if (res.ok) {
-				location.href = 'console.html?v=20261027'
+				location.href = consoleUrl
 				return
 			}
 			errEl.textContent = res.message

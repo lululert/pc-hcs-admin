@@ -157,15 +157,29 @@
 		}
 	}
 
+	function mergeLegacyData(parsed) {
+		const seed = seedData()
+		if (!Array.isArray(parsed.pilots)) {
+			parsed.pilots = seed.pilots.slice()
+		}
+		return parsed
+	}
+
 	function loadAll() {
 		try {
-			const raw = localStorage.getItem(STORAGE_KEY)
+			let raw = localStorage.getItem(STORAGE_KEY)
 			if (!raw) {
+				const legacy = localStorage.getItem('hcs_admin_crud_v2')
+				if (legacy) {
+					const data = mergeLegacyData(JSON.parse(legacy))
+					saveAll(data)
+					return data
+				}
 				const seeded = seedData()
 				saveAll(seeded)
 				return seeded
 			}
-			return JSON.parse(raw)
+			return mergeLegacyData(JSON.parse(raw))
 		} catch (e) {
 			const seeded = seedData()
 			saveAll(seeded)
