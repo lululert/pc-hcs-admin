@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>餐饮供应链 HCS 管理端</title>
+	<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar">
+			<div class="sidebar-logo">
+				HCS 管理端
+				<small>餐饮供应链分布式协同</small>
+			</div>
+			<div class="nav-section">总览</div>
+			<ul class="nav-menu">
+				<li><a href="#dashboard" data-page="dashboard" class="active">工作台</a></li>
+				<li><a href="#goals" data-page="goals">技术目标</a></li>
+			</ul>
+			<div class="nav-section">技术内容</div>
+			<ul class="nav-menu">
+				<li><a href="#node" data-page="node">节点布局与协同</a></li>
+				<li><a href="#warehouse" data-page="warehouse">仓储调度与库存</a></li>
+				<li><a href="#trace" data-page="trace">物料流转与追溯</a></li>
+				<li><a href="#procurement" data-page="procurement">供需匹配与采购</a></li>
+				<li><a href="#warning" data-page="warning">仓储作业与预警</a></li>
+				<li><a href="#hcs" data-page="hcs">HCS 协同迭代</a></li>
+			</ul>
+			<div class="nav-section">方法与成果</div>
+			<ul class="nav-menu">
+				<li><a href="#method" data-page="method">技术方法与路线</a></li>
+				<li><a href="#deliverables" data-page="deliverables">体系成果与规范</a></li>
+			</ul>
+		</aside>
+
+		<div class="main-wrap">
+			<header class="topbar">
+				<div class="breadcrumb">当前位置：<strong id="crumbTitle">工作台</strong></div>
+				<div class="topbar-user">
+					<span id="userName">管理员</span>
+					<button type="button" class="btn-logout" id="btnLogout">退出登录</button>
+				</div>
+			</header>
+
+			<main class="content">
+				<!-- 工作台 -->
+				<section id="page-dashboard" class="panel active">
+					<h1 class="page-title">工作台</h1>
+					<p class="page-desc">本系统为合同「餐饮供应链分布式 HCS 管理配套技术体系」的 PC 管理端静态演示，左侧菜单可跳转各技术模块说明页。</p>
+					<div class="stat-row">
+						<div class="stat-card"><div class="label">协同节点</div><div class="value">128</div></div>
+						<div class="stat-card"><div class="label">在库 SKU</div><div class="value">3,426</div></div>
+						<div class="stat-card"><div class="label">在途流转批次</div><div class="value">56</div></div>
+						<div class="stat-card"><div class="label">预警待处理</div><div class="value">7</div></div>
+					</div>
+					<div class="card">
+						<h3>五大研究模块（技术方法拆分）</h3>
+						<div class="tag-row">
+							<span class="tag">节点布局协同</span>
+							<span class="tag">仓库协同调度</span>
+							<span class="tag">物料流转追溯</span>
+							<span class="tag">供需匹配决策</span>
+							<span class="tag">预警管控</span>
+						</div>
+						<p style="margin-top:16px">请从左侧进入「技术目标」「技术内容」各子模块，查看与合同文本一致的专项说明。</p>
+					</div>
+				</section>
+
+				<!-- 技术目标 -->
+				<section id="page-goals" class="panel">
+					<h1 class="page-title">技术目标</h1>
+					<p class="page-desc">第一条　本合同研究开发项目的要求如下：1. 技术目标</p>
+					<div class="card">
+						<ol>
+							<li><strong>（1）</strong>形成餐饮供应链仓储协同服务（HCS）管理模型的核心技术需求，统一餐饮供应链全流程作业标准与管控规则，提升仓储协同作业效率与精细化水平。</li>
+							<li><strong>（2）</strong>针对餐饮供应链分布式特征（多区域门店、多供应商、多仓储节点），设计适配性技术体系，形成 HCS 分布式管理方法论，满足多门店常态化协同作业需求。</li>
+							<li><strong>（3）</strong>建立仓储协同状态可协同、库存水平可管控、物料流转可追溯、供需匹配可评价的技术规范，为餐饮供应链仓储作业优化与管控决策提供支撑条件。</li>
+							<li><strong>（4）</strong>兼顾门店网点拓展、新增仓储节点及供应链规模扩张需求，形成可灵活适配的 HCS 管控机制，根据节点布局与供应结构变化动态优化管控策略。</li>
+						</ol>
+					</div>
+				</section>
+
+				<!-- 节点布局 -->
+				<section id="page-node" class="panel">
+					<h1 class="page-title">分布式供应链节点布局与协同配套技术</h1>
+					<p class="page-desc">技术内容（1）</p>
+					<div class="card">
+						<p>针对餐饮供应链多层级节点（餐饮门店、中心仓、前置仓等）的空间布局与协同关系设计需求，研究区域化、层级化仓储节点布局框架构建方法，实现多节点信息交互与作业联动，形成节点布局协同配套技术方案。</p>
+					</div>
+					<div class="card">
+						<h3>节点台账（演示数据）</h3>
+						<div class="table-wrap">
+							<table class="data-table">
+								<thead><tr><th>节点类型</th><th>名称</th><th>区域</th><th>协同状态</th></tr></thead>
+								<tbody>
+									<tr><td>中心仓</td><td>华中中央厨房仓</td><td>湖北武汉</td><td>正常联动</td></tr>
+									<tr><td>前置仓</td><td>武昌前置仓</td><td>湖北武汉</td><td>正常联动</td></tr>
+									<tr><td>门店</td><td>光谷餐饮门店 A</td><td>湖北武汉</td><td>信息同步中</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+
+				<!-- 仓储调度 -->
+				<section id="page-warehouse" class="panel">
+					<h1 class="page-title">仓储协同调度与库存动态管控配套技术</h1>
+					<p class="page-desc">技术内容（2）</p>
+					<div class="card">
+						<p>研究多仓节点间调拨补货、库存水位动态监测与安全库存核定技术，构建分布式库存协同管控机制，实现按需调配仓储资源，避免库存断档与积压失衡问题。</p>
+					</div>
+					<div class="card">
+						<h3>库存协同指标（演示）</h3>
+						<div class="table-wrap">
+							<table class="data-table">
+								<thead><tr><th>仓节点</th><th>安全库存率</th><th>周转天数</th><th>调拨建议</th></tr></thead>
+								<tbody>
+									<tr><td>中心仓</td><td>92%</td><td>18</td><td>维持</td></tr>
+									<tr><td>前置仓</td><td>78%</td><td>9</td><td>补货 +12%</td></tr>
+									<tr><td>门店仓</td><td>85%</td><td>4</td><td>维持</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+
+				<!-- 追溯 -->
+				<section id="page-trace" class="panel">
+					<h1 class="page-title">餐饮物料流转路径与追溯配套技术</h1>
+					<p class="page-desc">技术内容（3）</p>
+					<div class="card">
+						<p>针对原辅料、半成品、成品在多节点间的流转路径规划与状态跟踪需求，构建全链路追溯机制，实现从入库、存储、调拨到门店到货的全流程跟踪与核验。</p>
+					</div>
+					<div class="card">
+						<h3>流转追溯示例批次</h3>
+						<div class="table-wrap">
+							<table class="data-table">
+								<thead><tr><th>批次号</th><th>物料</th><th>当前节点</th><th>状态</th></tr></thead>
+								<tbody>
+									<tr><td>FL-20261026-001</td><td>净菜包</td><td>中心仓 → 前置仓</td><td>在途</td></tr>
+									<tr><td>FL-20261026-002</td><td>调理半成品</td><td>前置仓</td><td>已入库</td></tr>
+									<tr><td>FL-20261025-018</td><td>成品套餐</td><td>门店</td><td>已到货核验</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+
+				<!-- 采购 -->
+				<section id="page-procurement" class="panel">
+					<h1 class="page-title">供应链供需匹配与采购协同配套技术</h1>
+					<p class="page-desc">技术内容（4）</p>
+					<div class="card">
+						<p>研究门店需求预测、供应计划编制与采购批次协同技术，构建基于实际消耗的供需匹配模型，实现多门店需求与多节点供应的动态平衡与协同决策。</p>
+					</div>
+				</section>
+
+				<!-- 预警 -->
+				<section id="page-warning" class="panel">
+					<h1 class="page-title">分布式仓储作业与预警管控配套技术</h1>
+					<p class="page-desc">技术内容（5）</p>
+					<div class="card">
+						<p>建立库存水位、临期保质期、流转效率等关键指标的分级预警机制，实现仓储作业异常识别与闭环处置，保障供应链仓储环节稳定运行。</p>
+					</div>
+					<div class="card">
+						<h3>预警列表（演示）</h3>
+						<div class="table-wrap">
+							<table class="data-table">
+								<thead><tr><th>级别</th><th>指标</th><th>节点</th><th>说明</th></tr></thead>
+								<tbody>
+									<tr><td>黄色</td><td>库存水位</td><td>前置仓</td><td>低于安全线 8%</td></tr>
+									<tr><td>橙色</td><td>临期保质期</td><td>中心仓</td><td>3 日内到期批次 2 单</td></tr>
+									<tr><td>蓝色</td><td>流转效率</td><td>门店 A</td><td>到货核验延迟</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+
+				<!-- HCS 迭代 -->
+				<section id="page-hcs" class="panel">
+					<h1 class="page-title">HCS 协同体系迭代适配配套技术</h1>
+					<p class="page-desc">技术内容（6）</p>
+					<div class="card">
+						<p>构建餐饮供应链仓储协同知识积累与迭代优化机制，研究门店拓展、节点调整、经营模式变化等条件下 HCS 管理体系的快速适配方法，满足长期演进需求。</p>
+					</div>
+				</section>
+
+				<!-- 方法与路线 -->
+				<section id="page-method" class="panel">
+					<h1 class="page-title">技术方法和路线</h1>
+					<p class="page-desc">3. 技术方法和路线</p>
+					<div class="card">
+						<ol>
+							<li><strong>（1）</strong>开展餐饮供应链多节点布局、仓储作业流程与库存管控流程的实地调研，梳理协同调度、流转追溯等环节瓶颈，明确 HCS 配套技术整体研究方向与关键管控指标。</li>
+							<li><strong>（2）</strong>将研究内容拆分为节点布局协同、仓库协同调度、物料流转追溯、供需匹配决策、预警管控五大模块，开展技术方案仿真推演，细化各环节作业规则与管控参数。</li>
+							<li><strong>（3）</strong>开展多节点、多门店、多体量的仿真预演，验证配套技术体系协同效果，针对信息断档、库存失衡、供需偏差等问题迭代优化协同模型与管控参数。</li>
+							<li><strong>（4）</strong>结合餐饮供应链实际运营场景开展分阶段试点验证，归集仓储作业人员、调度管理人员及各环节实操反馈，针对性调整节点协同规则、库存核定口径、流转追溯节点与预警阈值。</li>
+						</ol>
+					</div>
+				</section>
+
+				<!-- 成果 -->
+				<section id="page-deliverables" class="panel">
+					<h1 class="page-title">体系成果与规范</h1>
+					<p class="page-desc">技术方法与路线（5）及成果定型</p>
+					<div class="card">
+						<p><strong>（5）</strong>完成整套餐饮供应链分布式 HCS 管理配套技术体系定型，编制节点协同操作规范、仓储调度管理细则、库存管控导则、供需协同决策规程，形成成熟可落地的专项技术成果。</p>
+					</div>
+					<div class="card">
+						<h3>成果文档清单（静态）</h3>
+						<ul style="padding-left:20px;line-height:2">
+							<li>节点协同操作规范</li>
+							<li>仓储调度管理细则</li>
+							<li>库存管控导则</li>
+							<li>供需协同决策规程</li>
+							<li>HCS 分布式管理方法论说明</li>
+						</ul>
+					</div>
+				</section>
+			</main>
+		</div>
+	</div>
+	<script src="js/auth.js"></script>
+	<script src="js/app.js"></script>
+</body>
+</html>

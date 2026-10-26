@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>登录 - 餐饮供应链 HCS 管理端</title>
+	<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+	<div class="login-page">
+		<div class="login-brand">
+			<h1>餐饮供应链分布式<br />HCS 管理配套技术体系</h1>
+			<p>
+				面向多区域门店、多供应商、多仓储节点的协同管控平台。涵盖节点布局、仓储调度、库存动态管控、物料流转追溯与供需协同决策等专项能力（静态演示站点）。
+			</p>
+		</div>
+		<div class="login-panel-wrap">
+			<div class="login-panel">
+				<h2>管理端登录</h2>
+				<p class="sub">HCS Supply Chain Management Console</p>
+				<div id="loginError" class="login-error"></div>
+				<form id="loginForm">
+					<div class="form-group">
+						<label for="username">账号</label>
+						<input id="username" name="username" type="text" autocomplete="username" placeholder="请输入账号" value="admin" />
+					</div>
+					<div class="form-group">
+						<label for="password">密码</label>
+						<input id="password" name="password" type="password" autocomplete="current-password" placeholder="请输入密码" value="123456" />
+					</div>
+					<button type="submit" class="btn-primary">登 录</button>
+				</form>
+				<p class="login-hint">演示账号：admin &nbsp;/&nbsp; 123456</p>
+			</div>
+		</div>
+	</div>
+	<script src="js/auth.js"></script>
+	<script>
+		if (window.HcsAuth.getSession()) {
+			location.replace('console.html')
+		}
+		const form = document.getElementById('loginForm')
+		const errEl = document.getElementById('loginError')
+		form.addEventListener('submit', function (e) {
+			e.preventDefault()
+			const username = document.getElementById('username').value
+			const password = document.getElementById('password').value
+			const res = window.HcsAuth.login(username, password)
+			if (res.ok) {
+				location.href = 'console.html'
+				return
+			}
+			errEl.textContent = res.message
+			errEl.classList.add('show')
+		})
+	</script>
+</body>
+</html>
