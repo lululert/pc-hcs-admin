@@ -6,7 +6,7 @@
 
 		host.innerHTML =
 			'<h1 class="page-title">数据与系统管理</h1>' +
-			'<p class="page-desc">本地演示环境：导出/导入 JSON 备份，或恢复整套演示数据。正式环境应对接服务端接口。</p>' +
+			'<p class="page-desc">导出/导入 JSON 备份，或恢复系统初始业务数据集。</p>' +
 			'<div class="settings-grid">' +
 			'<div class="card">' +
 			'<h3>数据备份</h3>' +
@@ -20,9 +20,9 @@
 			'<button type="button" class="btn btn-ghost" id="btnImport">选择文件导入</button>' +
 			'</div>' +
 			'<div class="card">' +
-			'<h3>演示数据</h3>' +
-			'<p class="muted">清空并重新写入合同场景下的演示种子数据。</p>' +
-			'<button type="button" class="btn btn-ghost" id="btnResetDemo">恢复演示数据</button>' +
+			'<h3>初始数据</h3>' +
+			'<p class="muted">清空并重新写入合同场景下的默认业务数据。</p>' +
+			'<button type="button" class="btn btn-ghost" id="btnResetDemo">恢复初始数据</button>' +
 			'</div>' +
 			'<div class="card">' +
 			'<h3>系统信息</h3>' +
@@ -67,10 +67,10 @@
 		})
 
 		host.querySelector('#btnResetDemo').addEventListener('click', () => {
-			if (!confirm('确认恢复演示数据？当前本地业务数据将被覆盖。')) return
+			if (!confirm('确认恢复初始数据？当前业务数据将被覆盖。')) return
 			global.HcsStore.resetDemo()
 			global.dispatchEvent(new CustomEvent('hcs-data-changed'))
-			alert('已恢复演示数据')
+			alert('已恢复初始数据')
 		})
 	}
 

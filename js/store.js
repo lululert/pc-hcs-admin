@@ -430,7 +430,7 @@
 
 	function resetDemo() {
 		saveAll(seedData())
-		appendAudit('system', '恢复演示', '重置全部业务数据')
+		appendAudit('system', '恢复初始数据', '重置全部业务数据')
 	}
 
 	function exportJson() {

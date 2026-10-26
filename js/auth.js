@@ -24,13 +24,13 @@
 		if (!u || !p) {
 			return { ok: false, message: '请输入账号和密码' }
 		}
-		// 演示账号；正式环境对接后端登录接口
+		// 内置账号；正式环境对接后端登录接口
 		if (u === 'admin' && p === '123456') {
 			const user = { username: u, displayName: '系统管理员', loginAt: Date.now() }
 			setSession(user)
 			return { ok: true, user }
 		}
-		return { ok: false, message: '账号或密码错误（演示：admin / 123456）' }
+		return { ok: false, message: '账号或密码错误' }
 	}
 
 	function requireAuth() {
