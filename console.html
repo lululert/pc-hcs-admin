@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<script>
-		window.HCS_BUILD = '20261029'
+		window.HCS_BUILD = '20261030'
 		if (!/\bv=/.test(location.search)) {
 			location.replace(
 				location.pathname + '?v=' + window.HCS_BUILD + (location.hash || '#dashboard')
@@ -15,56 +15,92 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>餐饮供应链 HCS 管理端</title>
-	<link rel="stylesheet" href="css/admin.css?v=20261029" />
+	<link rel="stylesheet" href="css/admin.css?v=20261030" />
 </head>
 <body>
-	<div class="layout">
-		<aside class="sidebar">
+	<div class="layout" id="appLayout">
+		<aside class="sidebar" id="appSidebar">
 			<div class="sidebar-logo">
-				HCS 管理端
+				<span class="sidebar-logo-text">HCS 管理端</span>
 				<small>餐饮供应链 · 分布式协同</small>
 			</div>
-			<div class="nav-section">总览</div>
-			<ul class="nav-menu">
-				<li><a href="#dashboard" data-page="dashboard" class="active">工作台</a></li>
-			</ul>
-			<div class="nav-section">项目体系</div>
-			<ul class="nav-menu">
-				<li><a href="#goals" data-page="goals">技术目标</a></li>
-				<li><a href="#techContent" data-page="techContent">技术内容</a></li>
-				<li><a href="#methods" data-page="methods">方法路线</a></li>
-				<li><a href="#deliverables" data-page="deliverables">体系成果</a></li>
-				<li><a href="#architecture" data-page="architecture">模块映射</a></li>
-			</ul>
-			<div class="nav-section">业务功能</div>
-			<ul class="nav-menu">
-				<li><a href="#node" data-page="node">节点布局</a></li>
-				<li><a href="#inventory" data-page="inventory">库存管控</a></li>
-				<li><a href="#dispatch" data-page="dispatch">仓储调度</a></li>
-				<li><a href="#trace" data-page="trace">流转追溯</a></li>
-				<li><a href="#procurement" data-page="procurement">供需采购</a></li>
-				<li><a href="#warning" data-page="warning">预警管控</a></li>
-				<li><a href="#pilot" data-page="pilot">试点核验</a></li>
-				<li><a href="#hcs" data-page="hcs">HCS 规则</a></li>
-			</ul>
-			<div class="nav-section">协同支撑</div>
-			<ul class="nav-menu">
-				<li><a href="#simulation" data-page="simulation">模拟推演</a></li>
-				<li><a href="#knowledge" data-page="knowledge">知识沉淀</a></li>
-				<li><a href="#users" data-page="users">协同人员</a></li>
-			</ul>
-			<div class="nav-section">系统管理</div>
-			<ul class="nav-menu">
-				<li><a href="#audit" data-page="audit">操作日志</a></li>
-				<li><a href="#settings" data-page="settings">数据管理</a></li>
-			</ul>
+			<nav class="sidebar-nav" aria-label="主导航">
+				<div class="nav-group" data-nav-group="overview">
+					<button type="button" class="nav-section-toggle" aria-expanded="true">
+						<span class="nav-section-label">总览</span>
+						<span class="nav-chevron" aria-hidden="true"></span>
+					</button>
+					<ul class="nav-menu">
+						<li><a href="#dashboard" data-page="dashboard" class="active">工作台</a></li>
+					</ul>
+				</div>
+				<div class="nav-group" data-nav-group="docs">
+					<button type="button" class="nav-section-toggle" aria-expanded="true">
+						<span class="nav-section-label">项目体系</span>
+						<span class="nav-chevron" aria-hidden="true"></span>
+					</button>
+					<ul class="nav-menu">
+						<li><a href="#goals" data-page="goals">技术目标</a></li>
+						<li><a href="#techContent" data-page="techContent">技术内容</a></li>
+						<li><a href="#methods" data-page="methods">方法路线</a></li>
+						<li><a href="#deliverables" data-page="deliverables">体系成果</a></li>
+						<li><a href="#architecture" data-page="architecture">模块映射</a></li>
+					</ul>
+				</div>
+				<div class="nav-group" data-nav-group="biz">
+					<button type="button" class="nav-section-toggle" aria-expanded="true">
+						<span class="nav-section-label">业务功能</span>
+						<span class="nav-chevron" aria-hidden="true"></span>
+					</button>
+					<ul class="nav-menu">
+						<li><a href="#node" data-page="node">节点布局</a></li>
+						<li><a href="#inventory" data-page="inventory">库存管控</a></li>
+						<li><a href="#dispatch" data-page="dispatch">仓储调度</a></li>
+						<li><a href="#trace" data-page="trace">流转追溯</a></li>
+						<li><a href="#procurement" data-page="procurement">供需采购</a></li>
+						<li><a href="#warning" data-page="warning">预警管控</a></li>
+						<li><a href="#pilot" data-page="pilot">试点核验</a></li>
+						<li><a href="#hcs" data-page="hcs">HCS 规则</a></li>
+					</ul>
+				</div>
+				<div class="nav-group" data-nav-group="support">
+					<button type="button" class="nav-section-toggle" aria-expanded="true">
+						<span class="nav-section-label">协同支撑</span>
+						<span class="nav-chevron" aria-hidden="true"></span>
+					</button>
+					<ul class="nav-menu">
+						<li><a href="#simulation" data-page="simulation">模拟推演</a></li>
+						<li><a href="#knowledge" data-page="knowledge">知识沉淀</a></li>
+						<li><a href="#users" data-page="users">协同人员</a></li>
+					</ul>
+				</div>
+				<div class="nav-group" data-nav-group="system">
+					<button type="button" class="nav-section-toggle" aria-expanded="true">
+						<span class="nav-section-label">系统管理</span>
+						<span class="nav-chevron" aria-hidden="true"></span>
+					</button>
+					<ul class="nav-menu">
+						<li><a href="#audit" data-page="audit">操作日志</a></li>
+						<li><a href="#settings" data-page="settings">数据管理</a></li>
+					</ul>
+				</div>
+			</nav>
+			<button type="button" class="sidebar-pin" id="btnSidebarPin" title="收起侧栏">
+				<span class="sidebar-pin-icon" aria-hidden="true"></span>
+				<span class="sidebar-pin-text">收起菜单</span>
+			</button>
 		</aside>
 
 		<div class="main-wrap">
 			<header class="topbar">
-				<div class="breadcrumb">当前位置：<strong id="crumbTitle">工作台</strong></div>
+				<div class="topbar-left">
+					<button type="button" class="btn-sidebar-toggle" id="btnSidebarToggle" aria-label="展开或收起侧栏菜单" aria-expanded="true">
+						<span class="icon-menu" aria-hidden="true"></span>
+					</button>
+					<div class="breadcrumb">当前位置：<strong id="crumbTitle">工作台</strong></div>
+				</div>
 				<div class="topbar-user">
-					<span class="build-tag" title="用于确认是否加载到最新静态资源">版本 20261029</span>
+					<span class="build-tag" title="用于确认是否加载到最新静态资源">版本 20261030</span>
 					<span id="userName">管理员</span>
 					<button type="button" class="btn-logout" id="btnLogout">退出登录</button>
 				</div>
@@ -162,14 +198,15 @@
 		</div>
 	</div>
 
-	<script src="js/build.js?v=20261029"></script>
-	<script src="js/auth.js?v=20261029"></script>
-	<script src="js/modules-config.js?v=20261029"></script>
-	<script src="js/store.js?v=20261029"></script>
-	<script src="js/project-docs.js?v=20261029"></script>
-	<script src="js/dashboard.js?v=20261029"></script>
-	<script src="js/settings.js?v=20261029"></script>
-	<script src="js/crud.js?v=20261029"></script>
-	<script src="js/app.js?v=20261029"></script>
+	<script src="js/build.js?v=20261030"></script>
+	<script src="js/auth.js?v=20261030"></script>
+	<script src="js/modules-config.js?v=20261030"></script>
+	<script src="js/store.js?v=20261030"></script>
+	<script src="js/project-docs.js?v=20261030"></script>
+	<script src="js/dashboard.js?v=20261030"></script>
+	<script src="js/settings.js?v=20261030"></script>
+	<script src="js/sidebar.js?v=20261030"></script>
+	<script src="js/crud.js?v=20261030"></script>
+	<script src="js/app.js?v=20261030"></script>
 </body>
 </html>

@@ -1,3 +1,3 @@
 (function (global) {
-	global.HCS_BUILD = '20261029'
+	global.HCS_BUILD = '20261030'
 })(window)
