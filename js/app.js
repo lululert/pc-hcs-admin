@@ -6,22 +6,42 @@
 	const navLinks = document.querySelectorAll('.nav-menu a[data-page]')
 	const crumbTitle = document.getElementById('crumbTitle')
 	const userNameEl = document.getElementById('userName')
+	const mounted = {}
 
 	const titles = {
 		dashboard: '工作台',
-		goals: '技术目标',
-		node: '节点布局与协同',
-		warehouse: '仓储调度与库存管控',
-		trace: '物料流转与追溯',
-		procurement: '供需匹配与采购协同',
-		warning: '仓储作业与预警管控',
-		hcs: 'HCS 协同体系迭代',
-		method: '技术方法与路线',
-		deliverables: '体系成果与规范'
+		node: '节点布局',
+		inventory: '库存管控',
+		dispatch: '仓储调度',
+		trace: '流转追溯',
+		procurement: '供需采购',
+		warning: '预警管控',
+		hcs: 'HCS 协同规则'
 	}
 
 	if (userNameEl) {
 		userNameEl.textContent = session.displayName || session.username
+	}
+
+	function refreshDashboard() {
+		const s = window.HcsStore.stats()
+		const set = (id, v) => {
+			const el = document.getElementById(id)
+			if (el) el.textContent = String(v)
+		}
+		set('statNodes', s.nodes)
+		set('statInventory', s.inventory)
+		set('statDispatch', s.dispatch)
+		set('statWarnings', s.warnings)
+	}
+
+	function mountCrudIfNeeded(pageId) {
+		const host = document.getElementById('page-' + pageId)
+		if (!host || !host.classList.contains('crud-host')) return
+		const moduleKey = host.getAttribute('data-module')
+		if (!moduleKey || mounted[pageId]) return
+		window.HcsCrud.mountModule(moduleKey, host)
+		mounted[pageId] = true
 	}
 
 	function showPage(pageId) {
@@ -36,6 +56,8 @@
 		if (location.hash.replace('#', '') !== id) {
 			history.replaceState(null, '', '#' + id)
 		}
+		mountCrudIfNeeded(id)
+		if (id === 'dashboard') refreshDashboard()
 	}
 
 	navLinks.forEach((a) => {
@@ -45,10 +67,34 @@
 		})
 	})
 
+	document.querySelectorAll('.quick-links a').forEach((a) => {
+		a.addEventListener('click', (e) => {
+			e.preventDefault()
+			showPage(a.getAttribute('href').replace('#', ''))
+		})
+	})
+
 	const logoutBtn = document.getElementById('btnLogout')
 	if (logoutBtn) {
 		logoutBtn.addEventListener('click', () => window.HcsAuth.logout())
 	}
+
+	const resetBtn = document.getElementById('btnResetDemo')
+	if (resetBtn) {
+		resetBtn.addEventListener('click', () => {
+			if (!confirm('将清空当前本地数据并恢复演示数据，是否继续？')) return
+			window.HcsStore.resetDemo()
+			Object.keys(mounted).forEach((k) => delete mounted[k])
+			document.querySelectorAll('.crud-host').forEach((el) => {
+				el.innerHTML = ''
+			})
+			refreshDashboard()
+			const hash = (location.hash || '#dashboard').replace('#', '')
+			if (hash !== 'dashboard') mountCrudIfNeeded(hash)
+		})
+	}
+
+	window.addEventListener('hcs-data-changed', refreshDashboard)
 
 	const hash = (location.hash || '#dashboard').replace('#', '')
 	showPage(hash)
