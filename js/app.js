@@ -94,21 +94,6 @@
 		logoutBtn.addEventListener('click', () => window.HcsAuth.logout())
 	}
 
-	const resetBtn = document.getElementById('btnResetDemo')
-	if (resetBtn) {
-		resetBtn.addEventListener('click', () => {
-			if (!confirm('将清空当前本地数据并恢复演示数据，是否继续？')) return
-			window.HcsStore.resetDemo()
-			Object.keys(mounted).forEach((k) => delete mounted[k])
-			document.querySelectorAll('.crud-host').forEach((el) => {
-				el.innerHTML = ''
-			})
-			refreshDashboard()
-			const hash = (location.hash || '#dashboard').replace('#', '')
-			if (hash !== 'dashboard') mountCrudIfNeeded(hash)
-		})
-	}
-
 	window.addEventListener('hcs-data-changed', refreshDashboard)
 
 	const hash = (location.hash || '#dashboard').replace('#', '')
