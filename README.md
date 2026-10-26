@@ -1,36 +1,35 @@
 # 餐饮供应链分布式 HCS 管理控制台（静态版）
 
-合同技术目标、技术内容、方法路线与体系成果的说明页，以及与节点、库存、调度、追溯、采购、预警、试点、模拟推演、知识沉淀、协同人员等业务模块的增删改查管理。
+合同体系说明 + 供应链业务全流程 + 系统管理能力（用户、字典、消息、接口、报表、监控等），数据保存在浏览器本地。
 
 ## 在线访问
 
 - GitHub Pages：<https://lululert.github.io/pc-hcs-admin/>
-- 建议入口：<https://lululert.github.io/pc-hcs-admin/index.html?v=20261029>
-- 默认账号：`admin` / `123456`
+- 建议入口：<https://lululert.github.io/pc-hcs-admin/index.html?v=20261101>
+- 默认账号：`admin` / `123456`（亦可在「用户管理」维护）
+
+## 功能模块概览
+
+| 分区 | 模块 |
+|------|------|
+| 总览 | 工作台、运行监控 |
+| 项目体系 | 技术目标/内容/方法/成果、模块映射 |
+| 基础主数据 | 供应商、物料主数据、组织架构 |
+| 业务功能 | 节点、库存、调度、追溯、采购、质检、预警、试点、HCS 规则 |
+| 协同支撑 | 模拟推演、知识沉淀、协同人员、协同审批 |
+| 系统管理 | 用户管理、数据字典、消息、接口集成、同步任务、报表、个人中心、日志、数据管理 |
+
+按登录角色（系统管理员 / 调度 / 仓储 / 业务只读 / 审计只读）自动控制可见菜单。
 
 ## 本地运行
 
-直接用浏览器打开 `index.html`（或通过任意静态 HTTP 服务托管本目录）。
+浏览器打开 `index.html` 即可。
 
-## 数据说明
+## 数据
 
-- 业务数据保存在浏览器 `localStorage`（键名 `hcs_admin_crud_v4`）。
-- 「数据管理」支持 JSON 导出/导入与恢复初始数据。
-- 「操作日志」记录本控制台内的增删改操作（最多 200 条）。
-
-## 目录结构
-
-| 路径 | 说明 |
-|------|------|
-| `index.html` | 登录页 |
-| `console.html` | 主控制台 |
-| `js/store.js` | 本地存储与默认业务数据 |
-| `js/modules-config.js` | 各业务模块字段配置 |
-| `js/project-docs.js` | 合同文档正文 |
-| `js/crud.js` | 通用列表增删改查 |
-| `js/dashboard.js` | 工作台图表与动态列表 |
-| `js/settings.js` | 数据导入导出 |
+- 存储键：`hcs_admin_crud_v4`（localStorage）
+- 「数据管理」：JSON 导出/导入、恢复初始数据
 
 ## 部署
 
-推送到 `main` 分支后，GitHub Actions 工作流 `.github/workflows/pages.yml` 会发布到 GitHub Pages。
+推送 `main` 后由 `.github/workflows/pages.yml` 发布 GitHub Pages。

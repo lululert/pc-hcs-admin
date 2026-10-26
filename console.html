@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<script>
-		window.HCS_BUILD = '20261032'
+		window.HCS_BUILD = '20261101'
 		if (!/\bv=/.test(location.search)) {
 			location.replace(
 				location.pathname + '?v=' + window.HCS_BUILD + (location.hash || '#dashboard')
@@ -15,7 +15,7 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>餐饮供应链 HCS 管理端</title>
-	<link rel="stylesheet" href="css/admin.css?v=20261032" />
+	<link rel="stylesheet" href="css/admin.css?v=20261101" />
 </head>
 <body>
 	<div class="layout" id="appLayout">
@@ -32,6 +32,7 @@
 					</button>
 					<ul class="nav-menu">
 						<li><a href="#dashboard" data-page="dashboard" class="active">工作台</a></li>
+						<li><a href="#monitor" data-page="monitor">运行监控</a></li>
 					</ul>
 				</div>
 				<div class="nav-group" data-nav-group="docs">
@@ -47,6 +48,17 @@
 						<li><a href="#architecture" data-page="architecture">模块映射</a></li>
 					</ul>
 				</div>
+				<div class="nav-group" data-nav-group="master">
+					<button type="button" class="nav-section-toggle" aria-expanded="true">
+						<span class="nav-section-label">基础主数据</span>
+						<span class="nav-chevron" aria-hidden="true"></span>
+					</button>
+					<ul class="nav-menu">
+						<li><a href="#supplier" data-page="supplier">供应商</a></li>
+						<li><a href="#material" data-page="material">物料主数据</a></li>
+						<li><a href="#org" data-page="org">组织架构</a></li>
+					</ul>
+				</div>
 				<div class="nav-group" data-nav-group="biz">
 					<button type="button" class="nav-section-toggle" aria-expanded="true">
 						<span class="nav-section-label">业务功能</span>
@@ -58,6 +70,7 @@
 						<li><a href="#dispatch" data-page="dispatch">仓储调度</a></li>
 						<li><a href="#trace" data-page="trace">流转追溯</a></li>
 						<li><a href="#procurement" data-page="procurement">供需采购</a></li>
+						<li><a href="#quality" data-page="quality">质检核验</a></li>
 						<li><a href="#warning" data-page="warning">预警管控</a></li>
 						<li><a href="#pilot" data-page="pilot">试点核验</a></li>
 						<li><a href="#hcs" data-page="hcs">HCS 规则</a></li>
@@ -72,6 +85,7 @@
 						<li><a href="#simulation" data-page="simulation">模拟推演</a></li>
 						<li><a href="#knowledge" data-page="knowledge">知识沉淀</a></li>
 						<li><a href="#users" data-page="users">协同人员</a></li>
+						<li><a href="#approval" data-page="approval">协同审批</a></li>
 					</ul>
 				</div>
 				<div class="nav-group" data-nav-group="system">
@@ -81,6 +95,12 @@
 					</button>
 					<ul class="nav-menu">
 						<li><a href="#sysusers" data-page="sysusers">用户管理</a></li>
+						<li><a href="#dict" data-page="dict">数据字典</a></li>
+						<li><a href="#notify" data-page="notify">消息通知</a></li>
+						<li><a href="#integration" data-page="integration">接口集成</a></li>
+						<li><a href="#syncjob" data-page="syncjob">同步任务</a></li>
+						<li><a href="#reports" data-page="reports">报表中心</a></li>
+						<li><a href="#profile" data-page="profile">个人中心</a></li>
 						<li><a href="#audit" data-page="audit">操作日志</a></li>
 						<li><a href="#settings" data-page="settings">数据管理</a></li>
 					</ul>
@@ -101,7 +121,7 @@
 					<div class="breadcrumb">当前位置：<strong id="crumbTitle">工作台</strong></div>
 				</div>
 				<div class="topbar-user">
-					<span class="build-tag" title="用于确认是否加载到最新静态资源">版本 20261032</span>
+					<span class="build-tag" title="用于确认是否加载到最新静态资源">版本 20261101</span>
 					<span id="userName">管理员</span>
 					<button type="button" class="btn-logout" id="btnLogout">退出登录</button>
 				</div>
@@ -128,6 +148,10 @@
 						<div class="stat-card"><div class="label">知识条目</div><div class="value" id="statKnowledge">0</div></div>
 						<div class="stat-card"><div class="label">协同人员</div><div class="value" id="statUsers">0</div></div>
 						<div class="stat-card"><div class="label">系统用户</div><div class="value" id="statSystemUsers">0</div></div>
+					</div>
+					<div class="stat-row stat-row-4 stat-row-secondary">
+						<div class="stat-card"><div class="label">待审批</div><div class="value" id="statApprovals">0</div></div>
+						<div class="stat-card"><div class="label">未读消息</div><div class="value" id="statNotify">0</div></div>
 					</div>
 					<div class="dash-grid">
 						<div class="card">
@@ -158,17 +182,26 @@
 							<a href="#simulation">模拟推演</a>
 							<a href="#knowledge">知识沉淀</a>
 							<a href="#architecture">模块映射</a>
+							<a href="#monitor">运行监控</a>
+							<a href="#approval">协同审批</a>
+							<a href="#reports">报表中心</a>
 							<a href="#sysusers">用户管理</a>
+							<a href="#profile">个人中心</a>
 							<a href="#settings">数据管理</a>
 						</div>
 					</div>
 				</section>
 
+				<section id="page-monitor" class="panel monitor-host"></section>
+				<section id="page-supplier" class="panel crud-host" data-module="suppliers"></section>
+				<section id="page-material" class="panel crud-host" data-module="materials"></section>
+				<section id="page-org" class="panel crud-host" data-module="organizations"></section>
 				<section id="page-node" class="panel crud-host" data-module="nodes"></section>
 				<section id="page-inventory" class="panel crud-host" data-module="inventory"></section>
 				<section id="page-dispatch" class="panel crud-host" data-module="dispatch"></section>
 				<section id="page-trace" class="panel crud-host" data-module="trace"></section>
 				<section id="page-procurement" class="panel crud-host" data-module="procurement"></section>
+				<section id="page-quality" class="panel crud-host" data-module="qualityChecks"></section>
 				<section id="page-warning" class="panel crud-host" data-module="warnings"></section>
 				<section id="page-pilot" class="panel crud-host" data-module="pilots"></section>
 				<section id="page-hcs" class="panel crud-host" data-module="hcsRules"></section>
@@ -180,7 +213,14 @@
 				<section id="page-simulation" class="panel crud-host" data-module="simulations"></section>
 				<section id="page-knowledge" class="panel crud-host" data-module="knowledge"></section>
 				<section id="page-users" class="panel crud-host" data-module="users"></section>
+				<section id="page-approval" class="panel crud-host" data-module="approvals"></section>
 				<section id="page-sysusers" class="panel crud-host" data-module="systemUsers"></section>
+				<section id="page-dict" class="panel crud-host" data-module="dictionaries"></section>
+				<section id="page-notify" class="panel crud-host" data-module="notifications"></section>
+				<section id="page-integration" class="panel crud-host" data-module="integrations"></section>
+				<section id="page-syncjob" class="panel crud-host" data-module="syncJobs"></section>
+				<section id="page-reports" class="panel reports-host"></section>
+				<section id="page-profile" class="panel profile-host"></section>
 				<section id="page-audit" class="panel crud-host" data-module="auditLogs"></section>
 				<section id="page-settings" class="panel settings-host"></section>
 			</main>
@@ -201,15 +241,20 @@
 		</div>
 	</div>
 
-	<script src="js/build.js?v=20261032"></script>
-	<script src="js/auth.js?v=20261032"></script>
-	<script src="js/modules-config.js?v=20261032"></script>
-	<script src="js/store.js?v=20261032"></script>
-	<script src="js/project-docs.js?v=20261032"></script>
-	<script src="js/dashboard.js?v=20261032"></script>
-	<script src="js/settings.js?v=20261032"></script>
-	<script src="js/sidebar.js?v=20261032"></script>
-	<script src="js/crud.js?v=20261032"></script>
-	<script src="js/app.js?v=20261032"></script>
+	<script src="js/build.js?v=20261101"></script>
+	<script src="js/auth.js?v=20261101"></script>
+	<script src="js/modules-config.js?v=20261101"></script>
+	<script src="js/modules-ext.js?v=20261101"></script>
+	<script src="js/store.js?v=20261101"></script>
+	<script src="js/project-docs.js?v=20261101"></script>
+	<script src="js/dashboard.js?v=20261101"></script>
+	<script src="js/settings.js?v=20261101"></script>
+	<script src="js/profile.js?v=20261101"></script>
+	<script src="js/reports.js?v=20261101"></script>
+	<script src="js/monitor.js?v=20261101"></script>
+	<script src="js/rbac.js?v=20261101"></script>
+	<script src="js/sidebar.js?v=20261101"></script>
+	<script src="js/crud.js?v=20261101"></script>
+	<script src="js/app.js?v=20261101"></script>
 </body>
 </html>

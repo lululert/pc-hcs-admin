@@ -14,6 +14,15 @@
 		knowledge: '知识沉淀',
 		users: '协同人员',
 		systemUsers: '系统用户',
+		suppliers: '供应商',
+		materials: '物料主数据',
+		organizations: '组织架构',
+		qualityChecks: '质检核验',
+		approvals: '协同审批',
+		dictionaries: '数据字典',
+		notifications: '消息通知',
+		integrations: '接口集成',
+		syncJobs: '同步任务',
 		hcsRules: 'HCS 规则',
 		auditLogs: '操作日志'
 	}
@@ -312,6 +321,116 @@
 					updatedAt: nowIso()
 				}
 			],
+			suppliers: [
+				{
+					id: uid(),
+					name: '华中鲜配供应链',
+					category: '净菜/冷链',
+					contact: '赵经理',
+					phone: '027-88880001',
+					status: '合作中',
+					address: '武汉市江夏区',
+					remark: '',
+					updatedAt: nowIso()
+				}
+			],
+			materials: [
+				{
+					id: uid(),
+					skuCode: 'SKU-JCA-001',
+					name: '净菜包-A',
+					category: '净菜',
+					unit: '袋',
+					shelfLifeDays: 7,
+					storage: '0-4℃',
+					defaultSupplier: '华中鲜配供应链',
+					updatedAt: nowIso()
+				}
+			],
+			organizations: [
+				{
+					id: uid(),
+					name: '华中营运中心',
+					type: '区域',
+					parentName: '总部',
+					leader: '张总',
+					status: '启用',
+					updatedAt: nowIso()
+				}
+			],
+			qualityChecks: [
+				{
+					id: uid(),
+					batchNo: 'FL-20261025-008',
+					material: '冷鲜禽肉',
+					nodeName: '华中中央厨房仓',
+					result: '合格',
+					inspector: '质检组',
+					checkDate: '2026-10-25',
+					note: '',
+					updatedAt: nowIso()
+				}
+			],
+			approvals: [
+				{
+					id: uid(),
+					title: '武昌前置仓紧急补货调拨',
+					bizType: '调拨审批',
+					applicant: '王调度',
+					status: '待审批',
+					applyDate: '2026-10-26',
+					content: '净菜包-A 200 袋',
+					updatedAt: nowIso()
+				}
+			],
+			dictionaries: [
+				{
+					id: uid(),
+					dictType: 'node_type',
+					dictCode: 'front_wh',
+					dictLabel: '前置仓',
+					sort: 2,
+					status: '启用',
+					remark: '',
+					updatedAt: nowIso()
+				}
+			],
+			notifications: [
+				{
+					id: uid(),
+					title: '库存低于安全线',
+					type: '预警',
+					receiver: '调度管理员',
+					readFlag: '否',
+					sendTime: nowIso(),
+					content: '武昌前置仓 净菜包-A 当前 420，低于安全库存 540。',
+					updatedAt: nowIso()
+				}
+			],
+			integrations: [
+				{
+					id: uid(),
+					name: 'WMS 库存回传',
+					system: 'WMS',
+					endpoint: 'https://api.example.com/wms/inventory',
+					syncMode: '定时',
+					status: '启用',
+					remark: '',
+					updatedAt: nowIso()
+				}
+			],
+			syncJobs: [
+				{
+					id: uid(),
+					jobName: 'nightly_inventory_sync',
+					cron: '0 2 * * *',
+					lastRun: '2026-10-26 02:00:00',
+					lastResult: '成功',
+					status: '运行中',
+					remark: '全节点库存快照',
+					updatedAt: nowIso()
+				}
+			],
 			systemUsers: [
 				{
 					id: uid(),
@@ -516,8 +635,25 @@
 			knowledge: (data.knowledge || []).length,
 			users: (data.users || []).length,
 			systemUsers: (data.systemUsers || []).filter((u) => u.status === '正常').length,
+			suppliers: (data.suppliers || []).length,
+			materials: (data.materials || []).length,
+			approvals: (data.approvals || []).filter((a) => a.status === '待审批').length,
+			notifications: (data.notifications || []).filter((n) => n.readFlag === '否').length,
 			hcsRules: (data.hcsRules || []).length
 		}
+	}
+
+	function changePassword(username, oldPassword, newPassword) {
+		const u = String(username || '').trim()
+		const data = loadAll()
+		const idx = (data.systemUsers || []).findIndex((r) => r.username === u)
+		if (idx < 0) throw new Error('用户不存在')
+		if (data.systemUsers[idx].password !== oldPassword) throw new Error('原密码不正确')
+		if (!newPassword || String(newPassword).length < 6) throw new Error('新密码至少 6 位')
+		data.systemUsers[idx].password = newPassword
+		data.systemUsers[idx].updatedAt = nowIso()
+		saveAll(data)
+		appendAudit('systemUsers', '修改密码', u)
 	}
 
 	function resetDemo() {
@@ -545,6 +681,7 @@
 		resetDemo,
 		exportJson,
 		importJson,
-		validateLogin
+		validateLogin,
+		changePassword
 	}
 })(window)

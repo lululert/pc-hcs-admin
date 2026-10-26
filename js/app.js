@@ -10,22 +10,34 @@
 
 	const titles = {
 		dashboard: '工作台',
+		monitor: '运行监控',
 		goals: '技术目标',
 		techContent: '技术内容',
 		methods: '技术方法和路线',
 		deliverables: '体系成果与规范',
 		architecture: '模块映射',
+		supplier: '供应商档案',
+		material: '物料主数据',
+		org: '组织架构',
 		node: '节点布局',
 		inventory: '库存管控',
 		dispatch: '仓储调度',
 		trace: '流转追溯',
 		procurement: '供需采购',
+		quality: '质检与核验',
 		warning: '预警管控',
 		pilot: '试点核验与反馈',
 		simulation: '场景模拟推演',
 		knowledge: 'HCS 知识沉淀',
 		users: '协同人员与角色',
+		approval: '协同审批',
 		sysusers: '系统用户管理',
+		dict: '数据字典',
+		notify: '消息通知',
+		integration: '接口与集成',
+		syncjob: '同步任务',
+		reports: '报表中心',
+		profile: '个人中心',
 		audit: '操作日志',
 		settings: '数据与系统管理',
 		hcs: 'HCS 协同规则'
@@ -38,6 +50,15 @@
 	const buildTag = document.querySelector('.build-tag')
 	if (buildTag && window.HCS_BUILD) {
 		buildTag.textContent = '版本 ' + window.HCS_BUILD
+	}
+
+	if (window.HcsRbac && window.HcsRbac.applyNav) {
+		window.HcsRbac.applyNav(session)
+	}
+
+	function canPage(pageId) {
+		if (!window.HcsRbac || !window.HcsRbac.canAccess) return true
+		return window.HcsRbac.canAccess(pageId, session.role)
 	}
 
 	function refreshDashboard() {
@@ -58,6 +79,8 @@
 		set('statKnowledge', s.knowledge)
 		set('statUsers', s.users)
 		set('statSystemUsers', s.systemUsers)
+		set('statApprovals', s.approvals)
+		set('statNotify', s.notifications)
 		if (window.HcsDashboard && window.HcsDashboard.refreshWidgets) {
 			window.HcsDashboard.refreshWidgets()
 		}
@@ -78,11 +101,27 @@
 		mounted['doc-' + pageId] = true
 	}
 
-	function mountSettingsIfNeeded(pageId) {
-		if (pageId !== 'settings') return
-		const host = document.getElementById('page-settings')
-		if (!host || !window.HcsSettings) return
-		window.HcsSettings.mount(host)
+	function mountCustomPage(pageId) {
+		if (pageId === 'settings') {
+			const host = document.getElementById('page-settings')
+			if (host && window.HcsSettings) window.HcsSettings.mount(host)
+		}
+		if (pageId === 'profile') {
+			const host = document.getElementById('page-profile')
+			if (host && window.HcsProfile) window.HcsProfile.mount(host, session)
+		}
+		if (pageId === 'reports') {
+			const host = document.getElementById('page-reports')
+			if (host && window.HcsReports) window.HcsReports.mount(host)
+		}
+		if (pageId === 'monitor') {
+			const host = document.getElementById('page-monitor')
+			if (host && window.HcsMonitor) {
+				host.dataset.mounted = '0'
+				host.innerHTML = ''
+				window.HcsMonitor.mount(host)
+			}
+		}
 	}
 
 	function mountCrudIfNeeded(pageId) {
@@ -110,7 +149,10 @@
 	}
 
 	function showPage(pageId) {
-		const id = titles[pageId] ? pageId : 'dashboard'
+		let id = titles[pageId] ? pageId : 'dashboard'
+		if (!canPage(id)) {
+			id = 'dashboard'
+		}
 		panels.forEach((el) => {
 			el.classList.toggle('active', el.id === 'page-' + id)
 		})
@@ -122,7 +164,7 @@
 			history.replaceState(null, '', '#' + id)
 		}
 		mountDocIfNeeded(id)
-		mountSettingsIfNeeded(id)
+		mountCustomPage(id)
 		mountCrudIfNeeded(id)
 		if (id === 'dashboard') refreshDashboard()
 	}
