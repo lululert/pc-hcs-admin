@@ -48,7 +48,8 @@
 			links: [
 				{ label: '数据管理', page: 'settings' },
 				{ label: '操作日志', page: 'audit' },
-				{ label: '协同人员', page: 'users' }
+				{ label: '协同人员', page: 'users' },
+				{ label: '系统用户管理', page: 'sysusers' }
 			]
 		},
 		methods: {

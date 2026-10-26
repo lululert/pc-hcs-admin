@@ -25,6 +25,7 @@
 		simulation: '场景模拟推演',
 		knowledge: 'HCS 知识沉淀',
 		users: '协同人员与角色',
+		sysusers: '系统用户管理',
 		audit: '操作日志',
 		settings: '数据与系统管理',
 		hcs: 'HCS 协同规则'
@@ -56,6 +57,7 @@
 		set('statSimulations', s.simulations)
 		set('statKnowledge', s.knowledge)
 		set('statUsers', s.users)
+		set('statSystemUsers', s.systemUsers)
 		if (window.HcsDashboard && window.HcsDashboard.refreshWidgets) {
 			window.HcsDashboard.refreshWidgets()
 		}

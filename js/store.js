@@ -13,6 +13,7 @@
 		simulations: '场景推演',
 		knowledge: '知识沉淀',
 		users: '协同人员',
+		systemUsers: '系统用户',
 		hcsRules: 'HCS 规则',
 		auditLogs: '操作日志'
 	}
@@ -311,8 +312,38 @@
 					updatedAt: nowIso()
 				}
 			],
+			systemUsers: [
+				{
+					id: uid(),
+					username: 'admin',
+					password: '123456',
+					displayName: '系统管理员',
+					role: '系统管理员',
+					phone: '',
+					status: '正常',
+					remark: '',
+					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					username: 'dispatch01',
+					password: '123456',
+					displayName: '调度管理员',
+					role: '调度管理员',
+					phone: '13800000001',
+					status: '正常',
+					remark: '',
+					updatedAt: nowIso()
+				}
+			],
 			auditLogs: []
 		}
+	}
+
+	function countActiveAdmins(data) {
+		return (data.systemUsers || []).filter(
+			(u) => u.role === '系统管理员' && u.status === '正常'
+		).length
 	}
 
 	function ensureShape(parsed) {
@@ -387,10 +418,23 @@
 	function create(module, payload) {
 		const data = loadAll()
 		if (!data[module]) data[module] = []
+		if (module === 'systemUsers') {
+			const username = String(payload.username || '').trim()
+			if (!username) throw new Error('请填写登录账号')
+			if (!payload.password) throw new Error('请设置登录密码')
+			if ((data.systemUsers || []).some((u) => u.username === username)) {
+				throw new Error('登录账号已存在')
+			}
+		}
 		const row = Object.assign({}, payload, { id: uid(), updatedAt: nowIso() })
+		if (module === 'systemUsers') {
+			row.username = String(row.username || '').trim()
+		}
 		data[module].unshift(row)
 		saveAll(data)
-		appendAudit(module, '新增', JSON.stringify(payload).slice(0, 120))
+		const auditPayload = Object.assign({}, payload)
+		if (auditPayload.password) auditPayload.password = '***'
+		appendAudit(module, '新增', JSON.stringify(auditPayload).slice(0, 120))
 		return row
 	}
 
@@ -398,7 +442,25 @@
 		const data = loadAll()
 		const idx = (data[module] || []).findIndex((r) => r.id === id)
 		if (idx < 0) return null
-		data[module][idx] = Object.assign({}, data[module][idx], payload, { id, updatedAt: nowIso() })
+		if (module === 'systemUsers') {
+			const next = Object.assign({}, data[module][idx], payload, { id, updatedAt: nowIso() })
+			const username = String(next.username || '').trim()
+			next.username = username
+			if (
+				(data.systemUsers || []).some((u) => u.id !== id && u.username === username)
+			) {
+				throw new Error('登录账号已存在')
+			}
+			if (!payload.password) {
+				next.password = data[module][idx].password
+			}
+			if (next.status === '停用' && next.role === '系统管理员' && countActiveAdmins(data) <= 1) {
+				throw new Error('至少保留一名启用中的系统管理员')
+			}
+			data[module][idx] = next
+		} else {
+			data[module][idx] = Object.assign({}, data[module][idx], payload, { id, updatedAt: nowIso() })
+		}
 		saveAll(data)
 		appendAudit(module, '编辑', 'id=' + id)
 		return data[module][idx]
@@ -406,9 +468,38 @@
 
 	function remove(module, id) {
 		const data = loadAll()
+		if (module === 'systemUsers') {
+			const row = (data.systemUsers || []).find((r) => r.id === id)
+			if (!row) return
+			if (row.role === '系统管理员' && row.status === '正常' && countActiveAdmins(data) <= 1) {
+				throw new Error('无法删除最后一名系统管理员')
+			}
+		}
 		data[module] = (data[module] || []).filter((r) => r.id !== id)
 		saveAll(data)
 		appendAudit(module, '删除', 'id=' + id)
+	}
+
+	function validateLogin(username, password) {
+		const u = String(username || '').trim()
+		const p = String(password || '')
+		if (!u || !p) {
+			return { ok: false, message: '请输入账号和密码' }
+		}
+		const row = list('systemUsers', '').find(
+			(r) => r.username === u && r.status === '正常'
+		)
+		if (!row || row.password !== p) {
+			return { ok: false, message: '账号或密码错误' }
+		}
+		return {
+			ok: true,
+			user: {
+				username: row.username,
+				displayName: row.displayName || row.username,
+				role: row.role || ''
+			}
+		}
 	}
 
 	function stats() {
@@ -424,6 +515,7 @@
 			simulations: (data.simulations || []).length,
 			knowledge: (data.knowledge || []).length,
 			users: (data.users || []).length,
+			systemUsers: (data.systemUsers || []).filter((u) => u.status === '正常').length,
 			hcsRules: (data.hcsRules || []).length
 		}
 	}
@@ -452,6 +544,7 @@
 		stats,
 		resetDemo,
 		exportJson,
-		importJson
+		importJson,
+		validateLogin
 	}
 })(window)

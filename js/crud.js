@@ -93,10 +93,16 @@
 				} else {
 					input = document.createElement('input')
 					input.type = field.type || 'text'
-					input.value = val == null ? '' : val
+					if (field.type === 'password') {
+						input.value = ''
+						input.autocomplete = 'new-password'
+					} else {
+						input.value = val == null ? '' : val
+					}
 				}
 				input.id = 'f_' + field.key
 				input.name = field.key
+				if (field.placeholder) input.placeholder = field.placeholder
 				if (field.required) input.required = true
 				wrap.appendChild(input)
 				modalForm.appendChild(wrap)
@@ -107,6 +113,10 @@
 			editingId = mode === 'edit' && record ? record.id : null
 			modalTitle.textContent = mode === 'edit' ? '编辑' : '新增'
 			buildFormFields(record || {})
+			if (moduleKey === 'systemUsers') {
+				const pw = modalForm.querySelector('[name="password"]')
+				if (pw) pw.required = mode !== 'edit'
+			}
 			modal.classList.remove('hidden')
 			modal.setAttribute('aria-hidden', 'false')
 		}
@@ -150,10 +160,13 @@
 						'<button type="button" class="btn-link btn-del danger">删除</button>'
 					tdAct.querySelector('.btn-edit').addEventListener('click', () => openModal('edit', row))
 					tdAct.querySelector('.btn-del').addEventListener('click', () => {
-						if (confirm('确认删除该记录？')) {
+						if (!confirm('确认删除该记录？')) return
+						try {
 							store.remove(moduleKey, row.id)
 							renderTable()
 							global.dispatchEvent(new CustomEvent('hcs-data-changed'))
+						} catch (err) {
+							alert(err && err.message ? err.message : '删除失败')
 						}
 					})
 				}
@@ -172,10 +185,15 @@
 		modalSave.addEventListener('click', () => {
 			if (!modalForm.reportValidity()) return
 			const payload = collectForm()
-			if (editingId) {
-				store.update(moduleKey, editingId, payload)
-			} else {
-				store.create(moduleKey, payload)
+			try {
+				if (editingId) {
+					store.update(moduleKey, editingId, payload)
+				} else {
+					store.create(moduleKey, payload)
+				}
+			} catch (err) {
+				alert(err && err.message ? err.message : '保存失败')
+				return
 			}
 			closeModal()
 			renderTable()

@@ -252,7 +252,7 @@
 					key: 'role',
 					label: '角色',
 					type: 'select',
-					options: ['系统管理员', '调度管理员', '仓储作业', '门店负责人', '供应商联络']
+					options: ['调度管理员', '仓储作业', '门店负责人', '供应商联络', '其他']
 				},
 				{ key: 'nodeName', label: '所属节点', type: 'text' },
 				{ key: 'phone', label: '联系电话', type: 'text' },
@@ -261,6 +261,37 @@
 					label: '状态',
 					type: 'select',
 					options: ['在岗', '休假', '停用']
+				},
+				{ key: 'remark', label: '备注', type: 'textarea' }
+			]
+		},
+		systemUsers: {
+			title: '系统用户管理',
+			desc: '管理端登录账号、权限角色与启用状态（本地存储；上线应对接统一认证）。',
+			columns: [
+				{ key: 'username', label: '登录账号' },
+				{ key: 'displayName', label: '姓名' },
+				{ key: 'role', label: '权限角色' },
+				{ key: 'phone', label: '手机' },
+				{ key: 'status', label: '状态' }
+			],
+			fields: [
+				{ key: 'username', label: '登录账号', type: 'text', required: true },
+				{ key: 'password', label: '登录密码', type: 'password', placeholder: '编辑时留空则不修改' },
+				{ key: 'displayName', label: '姓名', type: 'text', required: true },
+				{
+					key: 'role',
+					label: '权限角色',
+					type: 'select',
+					required: true,
+					options: ['系统管理员', '调度管理员', '仓储管理员', '业务只读', '审计只读']
+				},
+				{ key: 'phone', label: '手机', type: 'text' },
+				{
+					key: 'status',
+					label: '状态',
+					type: 'select',
+					options: ['正常', '停用']
 				},
 				{ key: 'remark', label: '备注', type: 'textarea' }
 			]
@@ -315,6 +346,7 @@
 		simulation: 'simulations',
 		knowledge: 'knowledge',
 		users: 'users',
+		sysusers: 'systemUsers',
 		audit: 'auditLogs',
 		hcs: 'hcsRules'
 	}

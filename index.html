@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<script>
-		window.HCS_BUILD = '20261031'
+		window.HCS_BUILD = '20261032'
 		if (!/\bv=/.test(location.search)) {
 			location.replace(location.pathname + '?v=' + window.HCS_BUILD)
 		}
@@ -13,7 +13,7 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>登录 - 餐饮供应链 HCS 管理端</title>
-	<link rel="stylesheet" href="css/admin.css?v=20261031" />
+	<link rel="stylesheet" href="css/admin.css?v=20261032" />
 </head>
 <body>
 	<div class="login-page">
@@ -42,10 +42,11 @@
 			</div>
 		</div>
 	</div>
-	<script src="js/build.js?v=20261031"></script>
-	<script src="js/auth.js?v=20261031"></script>
+	<script src="js/build.js?v=20261032"></script>
+	<script src="js/store.js?v=20261032"></script>
+	<script src="js/auth.js?v=20261032"></script>
 	<script>
-		var consoleUrl = 'console.html?v=' + (window.HCS_BUILD || '20261031')
+		var consoleUrl = 'console.html?v=' + (window.HCS_BUILD || '20261032')
 		if (window.HcsAuth.getSession()) {
 			location.replace(consoleUrl)
 		}
