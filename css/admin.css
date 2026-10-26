@@ -509,6 +509,32 @@ table.data-table tbody tr:hover {
 	margin-top: 20px;
 }
 
+.page-desc {
+	color: var(--muted);
+	font-size: 14px;
+	margin: -8px 0 20px;
+	line-height: 1.6;
+}
+
+.doc-card .doc-list {
+	margin: 0;
+	padding-left: 1.25em;
+	line-height: 1.75;
+	color: #434343;
+}
+
+.doc-card .doc-list li {
+	margin-bottom: 12px;
+}
+
+.stat-row-secondary {
+	margin-top: 12px;
+}
+
+.stat-row-4 {
+	grid-template-columns: repeat(4, 1fr);
+}
+
 .modal {
 	position: fixed;
 	inset: 0;

@@ -164,9 +164,33 @@
 				{ key: 'description', label: '说明', type: 'textarea' }
 			]
 		},
+		pilots: {
+			title: '试点核验与反馈',
+			desc: '技术方法路线（4）：分阶段试点、归集实操反馈并调整协同规则与预警阈值。',
+			columns: [
+				{ key: 'phase', label: '阶段' },
+				{ key: 'scene', label: '试点场景' },
+				{ key: 'owner', label: '负责人' },
+				{ key: 'status', label: '状态' },
+				{ key: 'feedback', label: '反馈摘要' }
+			],
+			fields: [
+				{ key: 'phase', label: '阶段', type: 'text', required: true },
+				{ key: 'scene', label: '试点场景', type: 'text', required: true },
+				{ key: 'owner', label: '负责人', type: 'text' },
+				{
+					key: 'status',
+					label: '状态',
+					type: 'select',
+					options: ['计划中', '进行中', '已完成', '待复盘']
+				},
+				{ key: 'feedback', label: '实操反馈', type: 'textarea' },
+				{ key: 'adjustment', label: '规则/阈值调整', type: 'textarea' }
+			]
+		},
 		hcsRules: {
 			title: 'HCS 协同规则',
-			desc: '体系版本、适配范围与迭代规则维护。',
+			desc: '体系成果：节点协同操作规范、调度细则、库存导则、供需决策规程。',
 			columns: [
 				{ key: 'version', label: '版本' },
 				{ key: 'title', label: '规则名称' },
@@ -197,6 +221,7 @@
 		trace: 'trace',
 		procurement: 'procurement',
 		warning: 'warnings',
+		pilot: 'pilots',
 		hcs: 'hcsRules'
 	}
 

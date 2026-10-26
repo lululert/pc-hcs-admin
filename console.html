@@ -7,18 +7,25 @@
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
 	<title>餐饮供应链 HCS 管理端</title>
-	<link rel="stylesheet" href="css/admin.css?v=20261026d" />
+	<link rel="stylesheet" href="css/admin.css?v=20261027" />
 </head>
 <body>
 	<div class="layout">
 		<aside class="sidebar">
 			<div class="sidebar-logo">
 				HCS 管理端
-				<small>业务数据 · 增删改查</small>
+				<small>餐饮供应链 · 分布式协同</small>
 			</div>
 			<div class="nav-section">总览</div>
 			<ul class="nav-menu">
 				<li><a href="#dashboard" data-page="dashboard" class="active">工作台</a></li>
+			</ul>
+			<div class="nav-section">项目体系</div>
+			<ul class="nav-menu">
+				<li><a href="#goals" data-page="goals">技术目标</a></li>
+				<li><a href="#techContent" data-page="techContent">技术内容</a></li>
+				<li><a href="#methods" data-page="methods">方法路线</a></li>
+				<li><a href="#deliverables" data-page="deliverables">体系成果</a></li>
 			</ul>
 			<div class="nav-section">业务功能</div>
 			<ul class="nav-menu">
@@ -28,6 +35,7 @@
 				<li><a href="#trace" data-page="trace">流转追溯</a></li>
 				<li><a href="#procurement" data-page="procurement">供需采购</a></li>
 				<li><a href="#warning" data-page="warning">预警管控</a></li>
+				<li><a href="#pilot" data-page="pilot">试点核验</a></li>
 				<li><a href="#hcs" data-page="hcs">HCS 规则</a></li>
 			</ul>
 		</aside>
@@ -44,21 +52,29 @@
 			<main class="content">
 				<section id="page-dashboard" class="panel active">
 					<h1 class="page-title">工作台</h1>
-					<div class="stat-row">
+					<div class="stat-row stat-row-4">
 						<div class="stat-card"><div class="label">协同节点</div><div class="value" id="statNodes">0</div></div>
 						<div class="stat-card"><div class="label">库存记录</div><div class="value" id="statInventory">0</div></div>
 						<div class="stat-card"><div class="label">在途调度</div><div class="value" id="statDispatch">0</div></div>
 						<div class="stat-card"><div class="label">待处理预警</div><div class="value" id="statWarnings">0</div></div>
 					</div>
+					<div class="stat-row stat-row-4 stat-row-secondary">
+						<div class="stat-card"><div class="label">追溯单证</div><div class="value" id="statTrace">0</div></div>
+						<div class="stat-card"><div class="label">采购计划</div><div class="value" id="statProcurement">0</div></div>
+						<div class="stat-card"><div class="label">试点项目</div><div class="value" id="statPilots">0</div></div>
+						<div class="stat-card"><div class="label">规范条目</div><div class="value" id="statHcsRules">0</div></div>
+					</div>
 					<div class="card">
 						<h3>快捷入口</h3>
 						<div class="quick-links">
+							<a href="#techContent">技术内容总览</a>
 							<a href="#node">节点布局</a>
 							<a href="#inventory">库存管控</a>
 							<a href="#dispatch">仓储调度</a>
 							<a href="#trace">流转追溯</a>
 							<a href="#procurement">供需采购</a>
 							<a href="#warning">预警管控</a>
+							<a href="#pilot">试点核验</a>
 							<a href="#hcs">HCS 规则</a>
 						</div>
 					</div>
@@ -70,7 +86,12 @@
 				<section id="page-trace" class="panel crud-host" data-module="trace"></section>
 				<section id="page-procurement" class="panel crud-host" data-module="procurement"></section>
 				<section id="page-warning" class="panel crud-host" data-module="warnings"></section>
+				<section id="page-pilot" class="panel crud-host" data-module="pilots"></section>
 				<section id="page-hcs" class="panel crud-host" data-module="hcsRules"></section>
+				<section id="page-goals" class="panel doc-host" data-doc="goals"></section>
+				<section id="page-techContent" class="panel doc-host" data-doc="techContent"></section>
+				<section id="page-methods" class="panel doc-host" data-doc="methods"></section>
+				<section id="page-deliverables" class="panel doc-host" data-doc="deliverables"></section>
 			</main>
 		</div>
 	</div>
@@ -89,10 +110,11 @@
 		</div>
 	</div>
 
-	<script src="js/auth.js?v=20261026d"></script>
-	<script src="js/modules-config.js?v=20261026d"></script>
-	<script src="js/store.js?v=20261026d"></script>
-	<script src="js/crud.js?v=20261026d"></script>
-	<script src="js/app.js?v=20261026d"></script>
+	<script src="js/auth.js?v=20261027"></script>
+	<script src="js/modules-config.js?v=20261027"></script>
+	<script src="js/store.js?v=20261027"></script>
+	<script src="js/project-docs.js?v=20261027"></script>
+	<script src="js/crud.js?v=20261027"></script>
+	<script src="js/app.js?v=20261027"></script>
 </body>
 </html>

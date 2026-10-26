@@ -1,5 +1,5 @@
 (function (global) {
-	const STORAGE_KEY = 'hcs_admin_crud_v2'
+	const STORAGE_KEY = 'hcs_admin_crud_v3'
 
 	function nowIso() {
 		return new Date().toISOString().slice(0, 19).replace('T', ' ')
@@ -120,6 +120,38 @@
 					effectiveDate: '2026-01-01',
 					adaptationNote: '门店拓展时自动复制前置仓模板',
 					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					version: 'v1.1',
+					title: '仓储调度管理细则',
+					scope: '中心仓-前置仓',
+					status: '生效中',
+					effectiveDate: '2026-01-01',
+					adaptationNote: '',
+					updatedAt: nowIso()
+				},
+				{
+					id: uid(),
+					version: 'v1.0',
+					title: '供需协同决策规程',
+					scope: '门店采购',
+					status: '生效中',
+					effectiveDate: '2026-01-01',
+					adaptationNote: '',
+					updatedAt: nowIso()
+				}
+			],
+			pilots: [
+				{
+					id: uid(),
+					phase: '第一阶段',
+					scene: '华中区前置仓补货协同',
+					owner: '调度管理员',
+					status: '进行中',
+					feedback: '库存核定口径需与门店日销对齐',
+					adjustment: '预警阈值下调 5%',
+					updatedAt: nowIso()
 				}
 			]
 		}
@@ -190,6 +222,7 @@
 			trace: (data.trace || []).length,
 			procurement: (data.procurement || []).length,
 			warnings: (data.warnings || []).filter((w) => w.status !== '已闭环').length,
+			pilots: (data.pilots || []).length,
 			hcsRules: (data.hcsRules || []).length
 		}
 	}
